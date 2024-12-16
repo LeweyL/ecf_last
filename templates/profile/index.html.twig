@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block body %}
+    <h1>{{ 'profile_title'|trans }}</h1>
+
+    <div style="display: flex; align-items: flex-start;">
+        <!-- Informations utilisateur -->
+        <div>
+            <p><strong>{{ 'profile_firstname'|trans }}:</strong> {{ user.firstname }}</p>
+            <p><strong>{{ 'profile_lastname'|trans }}:</strong> {{ user.lastname }}</p>
+            <p><strong>{{ 'profile_email'|trans }}:</strong> {{ user.email }}</p>
+            <p><strong>{{ 'profile_birth'|trans }}:</strong> {{ user.birthdate }}</p>
+            <p><strong>{{ 'profile_adress'|trans }}:</strong> {{ user.adress }}</p>
+            <p><strong>{{ 'profile_postal'|trans }}:</strong> {{ user.postal }}</p>
+            <p><strong>{{ 'profile_phone'|trans }}:</strong> 0{{ user.phone }}</p>
+        </div>
+
+        <!-- Boutons d'abonnement -->
+        <div style="margin-left: 20px;">
+        <h2>{{ 'profile_sub'|trans }}</h2>
+            {% if not user.subscribed %}
+                <form action="{{ path('subscribe_user', {'id': user.id, 'duration': '1month'}) }}" method="post" style="margin-bottom: 10px;">
+                    <button type="submit" class="btn btn-success">S'abonner 1 mois (23.99€)</button>
+                </form>
+                <form action="{{ path('subscribe_user', {'id': user.id, 'duration': '1year'}) }}" method="post">
+                    <button type="submit" class="btn btn-success">S'abonner 1 an (258.99€ (-10%))</button>
+                </form>
+            {% else %}
+                <p class="text-success">Vous êtes abonné jusqu'au {{ user.endSubscription|date('d/m/Y') }}.</p>
+                <form action="{{ path('unsubscribe_user', {'id': user.id}) }}" method="post" style="margin-top: 10px;">
+                    <button type="submit" class="btn btn-danger">Se désabonner</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{{ path('app_profile_edit') }}" class="btn btn-primary mt-3">{{ 'profile_modify'|trans }}</a>
+
+{% endblock %}

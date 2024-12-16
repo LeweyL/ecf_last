@@ -1,0 +1,117 @@
+controllers:
+  resource:
+    path: ../src/Controller/
+    namespace: App\Controller
+  type: attribute
+
+base_loading:
+  path: /
+  controller: App\Controller\BaseController::index
+
+app_home:
+  path: /{_locale}/
+  controller: App\Controller\DefaultController::index
+  requirements:
+    _locale: en|fr|de
+
+homepage:
+  path: /{_locale}/
+  controller: App\Controller\DefaultController::index
+  requirements:
+    _locale: en|fr|de
+
+register:
+  path: /{_locale}/register
+  controller: App\Controller\RegistrationController::register
+  requirements:
+    _locale: en|fr|de
+
+logout:
+  path: /logout
+  controller: App\Controller\LoginController::logout
+
+app_login:
+  path: /{_locale}/login
+  controller: App\Controller\LoginController::index
+  requirements:
+    _locale: "en|fr"
+
+login:
+  path: /{_locale}/login
+  controller: App\Controller\LoginController::index
+  requirements:
+    _locale: en|fr|de
+
+profile:
+  path: /{_locale}/profile
+  controller: App\Controller\ProfileController::index
+  requirements:
+    _locale: en|fr|de
+
+book_index:
+  path: /{_locale}/books
+  controller: App\Controller\BookController::index
+  requirements:
+    _locale: en|fr|de
+
+book_show:
+  path: /books/{id}
+  controller: App\Controller\BookController::show
+  requirements:
+    id: \d+
+
+book_reserve:
+  path: /books/{id}/reserve
+  controller: App\Controller\BookController::reserve
+  requirements:
+    id: \d+
+
+add_comment_redirect:
+  path: /books/{id}/add-comment
+  controller: App\Controller\BookController::addCommentRedirect
+  requirements:
+    id: \d+
+
+submit_comment:
+  path: /books/{id}/submit-comment
+  controller: App\Controller\BookController::submitComment
+  requirements:
+    id: \d+
+
+room_index:
+  path: /{_locale}/rooms
+  controller: App\Controller\RoomController::index
+  requirements:
+    _locale: en|fr|de
+
+room_show:
+  path: /rooms/{id}
+  controller: App\Controller\RoomController::show
+  requirements:
+    id: \d+
+
+room_reserve:
+  path: /rooms/{id}/reserve
+  controller: App\Controller\RoomController::reserve
+  requirements:
+    id: \d+
+
+add_admin_role:
+  path: /add-admin/{id}
+  controller: App\Controller\AdminController::addAdminRole
+  methods: [GET]
+
+admin_pannel:
+  path: /pannel
+  controller: App\Controller\PannelController::index
+
+add_book:
+  path: /book/add
+  controller: App\Controller\PannelController::addBook
+  methods: [GET, POST]
+
+room_get_reservations:
+  path: /rooms/{id}/reservations
+  controller: App\Controller\RoomController::getReservations
+  requirements:
+    id: \d+

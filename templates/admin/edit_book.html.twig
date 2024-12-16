@@ -1,0 +1,29 @@
+{# templates/admin/edit_book.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un livre{% endblock %}
+
+{% block body %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% if 'ROLE_ADMIN' in app.user.roles %}
+            <div class="container mt-5">
+                <h1>Modifier le livre</h1>
+                <form method="post" action="{{ path('edit_book', { id: book.id }) }}">
+                    {{ form_start(form) }}
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.author) }}
+                    {{ form_row(form.publicationYear) }}
+                    {{ form_row(form.summary) }}
+                    {{ form_row(form.condition) }}
+                    <button type="submit" class="btn btn-primary">Modifier</button>
+                    {{ form_end(form) }}
+                </form>
+            </div>
+        {% else %}
+            <p style="color: red; text-align: center; font-size: 24px; font-weight: bold;">Vous n'avez pas accès à cette page !</p>
+        {% endif %}
+    {% else %}
+        <p style="color: red; text-align: center; font-size: 24px; font-weight: bold;">Vous n'avez pas accès à cette page !</p>
+    {% endif %}
+{% endblock %}

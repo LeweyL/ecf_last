@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <h1>{{'register_title' | trans}}</h1>
+
+    {{ form_errors(registrationForm) }}
+
+    {{ form_start(registrationForm) }}
+        <div>
+            {{ form_row(registrationForm.firstname, {
+                label: 'register_firstname' | trans
+            }) }}
+            {{ form_row(registrationForm.lastname, {
+                label: 'register_lastname' | trans
+            }) }}
+        </div>
+        
+        <div>
+            {{ form_row(registrationForm.email, {
+                label: 'register_email' | trans
+            }) }}
+        </div>
+        
+        <div>
+            {{ form_row(registrationForm.birthdate, {
+                label: 'register_birth' | trans
+            }) }}
+        </div>
+        
+        <div>
+            {{ form_row(registrationForm.adress, {
+                label: 'register_adress' | trans
+            }) }}
+            {{ form_row(registrationForm.postal, {
+                label: 'register_postal' | trans
+            }) }}
+        </div>
+        
+        <div>
+            {{ form_row(registrationForm.phone, {
+                label: 'register_phone' | trans
+            }) }}
+        </div>
+        
+        <div>
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'register_password' | trans
+            }) }}
+            {{ form_row(registrationForm.confirmPassword, {
+                label: 'register_passwordconfirm' | trans
+            }) }}
+        </div>
+        
+        <div>
+            {{ form_row(registrationForm.agreeTerms, {
+                label: 'register_terms' | trans
+            }) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{'register_button' | trans}}</button>
+    {{ form_end(registrationForm) }}
+{% endblock %}

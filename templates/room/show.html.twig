@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la salle{% endblock %}
+
+{% block body %}
+<h1>{{ room.name }}</h1>
+<p>Capacité : {{ room.capacity }}</p>
+<p>Équipements : {{ room.equipment }}</p>
+
+<!-- Calendrier de réservation -->
+<h3>Calendrier de réservation</h3>
+<div id="calendar" style="max-width: 800px; margin: 0 auto;"></div>
+<form method="post" action="{{ path('room_reserve', {'id': room.id}) }}">
+    <label for="start">Début de la réservation :</label>
+    <input type="datetime-local" name="start" required>
+    
+    <label for="end">Fin de la réservation :</label>
+    <input type="datetime-local" name="end" required>
+    
+    <button type="submit" class="btn btn-primary">Réserver</button>
+</form>
+
+<!-- Formulaire de réservation -->
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <!-- Intégration de FullCalendar -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: function(info, successCallback, failureCallback) {
+                    // Récupérer les événements à partir de la route JSON
+                    fetch("{{ path('room_get_reservations', {'id': room.id}) }}")
+                        .then(response => response.json())
+                        .then(data => successCallback(data))
+                        .catch(error => failureCallback(error));
+                },
+                eventRender: function(info) {
+                    // Personnaliser l'apparence des événements
+                    if (info.event.extendedProps.status === 'indisponible') {
+                        info.el.style.backgroundColor = 'red';
+                    } else {
+                        info.el.style.backgroundColor = 'green';
+                    }
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+{% endblock %}

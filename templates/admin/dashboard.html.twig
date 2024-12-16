@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% if 'ROLE_ADMIN' in app.user.roles %}
+            <style>
+        /* Ajouter des bordures blanches autour des cellules */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid white; /* Bordure blanche pour chaque cellule */
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+            <h1>Admin Dashboard</h1>
+
+            <h2>Salles</h2>
+            <form action="{{ path('add_room') }}" method="get">
+                <button type="submit" class="btn btn-primary mb-3">Ajouter une salle</button>
+            </form>
+            <table class="table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Capacité</th>
+                        <th>Équipements</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in rooms %}
+                    <tr>
+                        <td>{{ room.id }}</td>
+                        <td>{{ room.name }}</td>
+                        <td>{{ room.capacity }}</td>
+                        <td>{{ room.equipment }}</td>
+                        <td>
+                            <a href="{{ path('edit_room', {'id': room.id}) }}">Modifier</a>
+                            <a href="{{ path('delete_room', {'id': room.id}) }}">Supprimer</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2>Livres</h2>
+            <form action="{{ path('add_book') }}" method="get">
+                <button type="submit" class="btn btn-primary mb-3">Ajouter un livre</button>
+            </form>
+
+            <table class="table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Titre</th>
+                        <th>Auteur</th>
+                        <th>Année de publication</th>
+                        <th>Disponibilité</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in books %}
+                    <tr>
+                        <td>{{ book.id }}</td>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.publicationYear }}</td>
+                        <td>{{ book.availability ? 'Disponible' : 'Indisponible' }}</td>
+                        <td>
+                            <a href="{{ path('edit_book', {'id': book.id}) }}">Modifier</a>
+                            <a href="{{ path('delete_book', {'id': book.id}) }}">Supprimer</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2>Utilisateurs</h2>
+            <table class="table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Nom</th>
+                        <th>Rôle</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.firstname }} {{ user.lastname }}</td>
+                        <td>{{ user.roles | join(', ') }}</td>
+                        <td>
+                            <a href="{{ path('edit_user', {'id': user.id}) }}">Modifier</a>
+                            <a href="{{ path('delete_user', {'id': user.id}) }}">Supprimer (Bannir)</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        {% else %}
+            <p style="color: red; text-align: center; font-size: 24px; font-weight: bold;">Vous n'avez pas accès à cette page !</p>
+        {% endif %}
+    {% else %}
+        <p style="color: red; text-align: center; font-size: 24px; font-weight: bold;">Vous n'avez pas accès à cette page !</p>
+    {% endif %}
+{% endblock %}

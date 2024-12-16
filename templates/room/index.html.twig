@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des salles{% endblock %}
+
+{% block body %}
+<h1 class="text-center">Liste des salles</h1>
+
+<style>
+    table {
+        width: 60%;
+        text-align: center;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    th:hover, td:hover {
+        background-color: #3a4a6b;
+    }
+
+    a {
+        color: grey;
+    }
+</style>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{ 'room_name'|trans }}</th>
+            <th>{{ 'room_capacity'|trans }}</th>
+            <th>{{ 'room_stuff'|trans }}</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for room in rooms %}
+            <tr>
+                <td>{{ room.name }}</td>
+                <td>{{ room.capacity }}</td>
+                <td>{{ room.equipment }}</td>
+                <td>
+                    <a href="{{ path('room_show', {'id': room.id}) }}" class="btn btn-info">Détails</a>
+                    <a href="{{ path('room_reserve', {'id': room.id}) }}" class="btn btn-success">Réserver</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des livres{% endblock %}
+
+{% block body %}
+<h1 class="text-center">Liste des livres</h1>
+
+<!-- Balise style pour les styles CSS -->
+<style>
+    table {
+        width: 60%;
+        text-align: center;
+        border-collapse: collapse; /* Pour fusionner les bords */
+    }
+
+    th, td {
+        border: 1px solid #ddd; /* Bordure grise claire */
+        padding: 8px;
+    }
+
+    th:hover {
+        background-color: #3a4a6b;
+    }
+
+    td:hover {
+        background-color: #3a4a6b;
+    }
+    
+    a{
+        color: grey;
+    }
+</style>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{ 'book_title'|trans }}</th>
+            <th>{{ 'book_author'|trans }}</th>
+            <th>{{ 'book_year'|trans }}</th>
+            <th>{{ 'book_state'|trans }}</th>
+            <th>{{ 'book_rating'|trans }}</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.publicationYear }}</td>
+                <td>{{ book.condition }}</td>
+
+                {# Calcul de la moyenne des notes #}
+                <td>
+                    {% set totalRating = 0 %}
+                    {% set count = 0 %}
+                    {% for comment in book.comments %}
+                        {% if comment.rating is not null %}
+                            {% set totalRating = totalRating + comment.rating %}
+                            {% set count = count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if count > 0 %}
+                        {{ (totalRating / count) | round(1) }}
+                    {% else %}
+                        Aucune note
+                    {% endif %}
+                </td>
+
+                <td>
+                    <a href="{{ path('book_show', {'id': book.id}) }}" class="btn btn-info">Détails</a>
+                    {% if book.isAvailable %}
+                        <a href="{{ path('book_reserve', {'id': book.id}) }}" class="btn btn-success">Réserver</a>
+                    {% else %}
+                        <span class="text-danger">Non disponible</span>
+                    {% endif %}
+                    <!-- Modifie cette ligne pour utiliser la bonne route pour ajouter un commentaire -->
+                    <a href="{{ path('add_comment_redirect', {'id': book.id}) }}" class="btn btn-primary">Commenter</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

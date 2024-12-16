@@ -1,0 +1,65 @@
+{# templates/admin/edit_user.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un utilisateur{% endblock %}
+
+{% block body %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% if 'ROLE_ADMIN' in app.user.roles %}
+            <div class="container mt-5">
+                <h1>Modifier l'utilisateur</h1>
+
+                <form method="post" action="{{ path('edit_user', { id: user.id }) }}">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="firstname" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="firstname" name="firstname" value="{{ user.firstname }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastname" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="lastname" name="lastname" value="{{ user.lastname }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="birthdate" class="form-label">Date de naissance</label>
+                        <input type="string" class="form-control" id="birthdate" name="birthdate" value="{{ user.birthdate }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="adress" class="form-label">Adresse</label>
+                        <input type="text" class="form-control" id="adress" name="adress" value="{{ user.adress }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postal" class="form-label">Code postal</label>
+                        <input type="text" class="form-control" id="postal" name="postal" value="{{ user.postal }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Téléphone</label>
+                        <input type="text" class="form-control" id="phone" name="phone" value="{{ user.phone }}" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Modifier</button>
+                </form>
+
+                <div class="mt-4">
+                    <h2>Modifier les rôles</h2>
+                    <form method="post" action="{{ path('toggle_admin_role', { id: user.id }) }}">
+                        <button type="submit" class="btn btn-warning">
+                            {% if 'ROLE_ADMIN' in user.roles %}
+                                Enlever le rôle ADMIN
+                            {% else %}
+                                Ajouter le rôle ADMIN
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <p style="color: red; text-align: center; font-size: 24px; font-weight: bold;">Vous n'avez pas accès à cette page !</p>
+        {% endif %}
+    {% else %}
+        <p style="color: red; text-align: center; font-size: 24px; font-weight: bold;">Vous n'avez pas accès à cette page !</p>
+    {% endif %}
+{% endblock %}
